@@ -15,6 +15,22 @@
         triggers-per-rotation = <20>;
     };
 
+    shields: shields {
+        compatible = "zmk,shields";
+        oled-shield: oled {
+            compatible = "zmk,oled";
+            sensor-bindings = <&inc_dec_kp C_VOLUME_UP C_VOLUME_DOWN>;
+
+            bindings = <
+                &kp ESC   &kp N1    &kp N2    &kp N3    &kp N4    &kp N5    &kp N6
+                &kp C_MUTE  &kp TAB   &kp Q     &kp W     &kp E     &kp R     &kp T     &kp Y
+                &trans      &kp CLCK  &kp A     &kp S     &kp D     &kp F     &kp G     &kp H
+                &trans      &kp LSHFT &trans    &kp Z     &kp X     &kp C     &kp V     &kp B
+                &trans      &kp LCTRL &kp LGUI  &kp LALT                      &kp SPACE
+            >;
+        };
+    };
+    
     keymap {
         compatible = "zmk,keymap";
 
