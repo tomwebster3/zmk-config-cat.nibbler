@@ -1,7 +1,36 @@
-name: Build ZMK firmware
-on: [push, pull_request, workflow_dispatch]
+name: Build Nibble firmware
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
   build:
-    uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@v0.3
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+
+      - name: Install west
+        run: pip install --upgrade west
+
+      - name: Build left half
+        run: west build -p -b nice_nano_v2 -- -DSHIELD=nibble_left -DZMK_CONFIG=$GITHUB_WORKSPACE
+
+      - name: Build right half
+        run: west build -p -b nice_nano_v2 -- -DSHIELD=nibble_right -DZMK_CONFIG=$GITHUB_WORKSPACE
+
+      - name: Upload UF2
+        uses: actions/upload-artifact@v3
+        with:
+          name: UF2
+          path: |
+            build/zephyr/zephyr.uf2
 
